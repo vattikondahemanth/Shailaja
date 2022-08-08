@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+<div id="example">
+
+</div>
+<div class="pages"></div>
+</body>
+<script>
+    const container = document.getElementById('example');
+    var data={{content_data|safe}}
+    const hot = new Handsontable(container, {
+  data: data,
+  rowHeaders: true,
+  colwidths:200,
+  colHeaders: ['ID','Name','Salary'],
+  columns:[
+  {data:'fields.id'},
+  {data:'fields.name'},
+  {data:'fields.salary'}],
+  height: 500,
+  stretchH: 'all',
+  width: 500,
+  dropdownMenu: true,
+  filters: true,
+  licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
+});
+var rowsOnSinglePage = hot.countRows();
+var newDataSet = hot.getData();
+var pages = document.querySelector(".pages");
+
+function createPages(rowsOnSinglePage) {
+  for (var i = 0; i < {{count}}; i++) {
+    bt = document.createElement("BUTTON");
+    bt.className = "myBt";
+    bt.innerHTML = i + 1;
+    pages.appendChild(bt);
+  }
+};
+
+createPages(rowsOnSinglePage); //we define how many rows
+
+pages.addEventListener("click", function(e) {
+  var clicked = e.target.innerHTML;
+  if (e.target !== pages) {
+    hot.updateSettings({
+      hiddenRows: {
+
+        rows: getArray(clicked),
+        indicators: false
+      }
+    });
+  }
+});
+
+function getArray(clicked) {
+  var parts = pages.childElementCount;
+  console.log('clicked',clicked)
+  $.ajax({
+      type:'GET',
+      url:'',
+      data:{
+         'page':clicked
+      },
+      success:function(response){
+       console.log(response)
+       hot.loadData(response)
+       }
+  });
+}
+
+
+</script>
+</html>

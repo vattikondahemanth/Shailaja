@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+
+</head>
+<body>
+<div id="example">
+
+</div>
+<div class="pages"></div>
+</body>
+<script>
+    const container = document.getElementById('example');
+    var data={{content_data|safe}}
+    const hot = new Handsontable(container, {
+  data: data,
+  rowHeaders: true,
+  colwidths:200,
+  colHeaders: ['ID','Name','Salary'],
+  columns:[
+  {data:'fields.id'},
+  {data:'fields.name'},
+  {data:'fields.salary'}],
+  height: 500,
+  width: 500,
+  dropdownMenu: true,
+  filters: true,
+  strechHall: true,
+  licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
+});
+</script>
+</html>
