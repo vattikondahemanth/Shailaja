@@ -5,6 +5,7 @@
     <title>Title</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 <body>
@@ -21,6 +22,16 @@
   rowHeaders: true,
   colwidths:200,
   colHeaders: ['ID','Name','Salary'],
+  cells(row, col) {
+    const cellPrp = {};
+
+    if (row === 0) {
+      cellPrp.renderer = mySearchBox;
+      cellPrp.readOnly = true;
+    }
+
+    return cellPrp
+  },
   columns:[
   {data:'fields.id'},
   {data:'fields.name'},
@@ -32,5 +43,65 @@
   strechHall: true,
   licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
 });
+
+function mySearchBox(instance, td, row, col, prop, value, cellProperties) {
+  Handsontable.renderers.TextRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
+  if(typeof value==='string'){
+  value = value.replace('\"', "");
+  }
+
+  td.innerHTML = `<input class="hotSearch txt-${col}"  value="${value}" onkeyup="searchData(event)">`;
+}
+function searchData(event){
+var focus_txt = document.getElementsByClassName(event.target.className)[0].value;
+
+var emp_val= document.getElementsByClassName("hotSearch txt-1")[0].value;
+console.log('sss',emp_val)
+var salary_val= document.getElementsByClassName("hotSearch txt-2")[0].value;
+<!--document.getElementsByClassName("hotSearch txt-1")[0].value=emp_val;-->
+
+if (emp_val.length >= 3 | salary_val.length >= 3){
+if (emp_val && salary_val){
+search_val = emp_val + "|" + salary_val
+}else if(emp_val){
+search_val = emp_val
+}
+else
+{
+search_val = salary_val
+}
+
+if((focus_txt!= null) && (focus_txt.length >= 3)){
+
+
+
+$.ajax({
+      type:'GET',
+      url:'http://localhost:8000/colsearch',
+      dataType: "json",
+      data:{
+         'searchString':search_val
+      },
+      success:function(response){
+       console.log("Success")
+       hot.loadData(response)
+       console.log(emp_val);
+       console.log(salary_val);
+
+       },
+       error: function(response){
+       console.log("Error")
+       console.log(response)
+       }
+  });
+}
+
+
+
+
+
+}
+}
+
 </script>
 </html>
