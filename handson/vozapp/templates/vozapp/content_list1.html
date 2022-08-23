@@ -1,107 +1,72 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+    <link href="{% static 'css/bootstrap-multiselect.css' %}" rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <script src="{% static 'js/home.js' %}"></script>
+    <script>
+        var data={{content_data|safe}};
+        var getall_ddl_data = {% url 'get_all_dd_data' %}
+        var get_hot_data = {% url 'get_hot_data' %}
+    </script>
+
 
 </head>
 <body>
-<div id="example">
+
+<div class="row">
+    <div class="col-sm-2">
+        <input type="text" id="txtmainsearch" class="form-control" />
+    </div>
+    <div class="col-sm-6">
+        <button type="button" id="btnmainsearch" class="btn btn-success">Search</button>
+    </div>
+</div>
+</br>
+<div class="row">
+    <div class="col-sm-2">
+        <select id="dd0" class="form-control"></select>
+    </div>
+    <div class="col-sm-2">
+        <select id="dd1"  class="form-control" ></select>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+        <button type="button" id="btnfullsearch" class="btn btn-success">Full Search</button>
+    </div>
+</div>
+</div>
+
+
+<div>
+    <select id="dd2" class="form-control" style="display:none"></select>
+
+    <select id="dd3" class="form-control" style="display:none"></select>
+
+    <select id="dd4" class="form-control" style="display:none"></select>
+</div>
+
+<div class="row">
+    <div class="col-sm-3">
+<div class="search_values"></div>
+        </div>
+</div>
+
+<div id="example" style="width: 200px; height:200px; overflow: scroll">
 
 </div>
-<div class="pages"></div>
+
 </body>
-<script>
-    const container = document.getElementById('example');
-    var data={{content_data|safe}}
-    const hot = new Handsontable(container, {
-  data: data,
-  rowHeaders: true,
-  colwidths:200,
-  colHeaders: ['ID','Name','Salary'],
-  cells(row, col) {
-    const cellPrp = {};
 
-    if (row === 0) {
-      cellPrp.renderer = mySearchBox;
-      cellPrp.readOnly = true;
-    }
-
-    return cellPrp
-  },
-  columns:[
-  {data:'fields.id'},
-  {data:'fields.name'},
-  {data:'fields.salary'}],
-  height: 500,
-  width: 500,
-  dropdownMenu: true,
-  filters: true,
-  strechHall: true,
-  licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
-});
-
-function mySearchBox(instance, td, row, col, prop, value, cellProperties) {
-  Handsontable.renderers.TextRenderer.apply(this, [instance, td, row, col, prop, value, cellProperties]);
-  if(typeof value==='string'){
-  value = value.replace('\"', "");
-  }
-
-  td.innerHTML = `<input class="hotSearch txt-${col}"  value="${value}" onkeyup="searchData(event)">`;
-}
-function searchData(event){
-var focus_txt = document.getElementsByClassName(event.target.className)[0].value;
-
-var emp_val= document.getElementsByClassName("hotSearch txt-1")[0].value;
-console.log('sss',emp_val)
-var salary_val= document.getElementsByClassName("hotSearch txt-2")[0].value;
-<!--document.getElementsByClassName("hotSearch txt-1")[0].value=emp_val;-->
-
-if (emp_val.length >= 3 | salary_val.length >= 3){
-if (emp_val && salary_val){
-search_val = emp_val + "|" + salary_val
-}else if(emp_val){
-search_val = emp_val
-}
-else
-{
-search_val = salary_val
-}
-
-if((focus_txt!= null) && (focus_txt.length >= 3)){
-
-
-
-$.ajax({
-      type:'GET',
-      url:'http://localhost:8000/colsearch',
-      dataType: "json",
-      data:{
-         'searchString':search_val
-      },
-      success:function(response){
-       console.log("Success")
-       hot.loadData(response)
-       console.log(emp_val);
-       console.log(salary_val);
-
-       },
-       error: function(response){
-       console.log("Error")
-       console.log(response)
-       }
-  });
-}
-
-
-
-
-
-}
-}
-
-</script>
 </html>
