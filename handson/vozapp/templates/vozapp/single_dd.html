@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+    <link href="{% static 'css/bootstrap-multiselect.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'css/vozapp_loader.css' %}" rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <script src="{% static 'js/single_dd.js' %}"></script>
+    <script src="{% static 'js/loader.js' %}"></script>
+    <script>
+        var data={{content_data|safe}};
+        var getall_ddl_data = {% url 'get_all_dd_data' %}
+        var get_hot_data = {% url 'get_hot_data' %}
+    </script>
+
+</head>
+<body>
+
+<div class="row">
+    <div class="col-sm-2">
+        <input type="text" id="txtmainsearch" class="form-control" />
+    </div>
+    <div class="col-sm-6">
+        <button type="button" id="btnmainsearch" class="btn btn-success">Search</button>
+    </div>
+    <div class="col-sm-4">
+        <button type="button" id="btnmainclear" class="btn btn-success">Clear</button>
+    </div>
+</div>
+</br>
+<div class="row">
+    <div class="col-sm-2">
+        <select id="dd" class="form-control"></select>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+        <button type="button" id="btnfullsearch" class="btn btn-success">Full Search</button>
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-sm-3">
+<div class="search_values"></div>
+        </div>
+</div>
+
+<div id="example" style="width: 200px; height:200px; overflow: scroll">
+
+</div>
+
+</body>
+
+</html>
