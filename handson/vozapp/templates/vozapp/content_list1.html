@@ -11,16 +11,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
     <link href="{% static 'css/bootstrap-multiselect.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'css/vozapp_loader.css' %}" rel='stylesheet' type='text/css'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/loader.js' %}"></script>
     <script>
         var data={{content_data|safe}};
         var getall_ddl_data = {% url 'get_all_dd_data' %}
         var get_hot_data = {% url 'get_hot_data' %}
     </script>
-
 
 </head>
 <body>
@@ -31,6 +32,9 @@
     </div>
     <div class="col-sm-6">
         <button type="button" id="btnmainsearch" class="btn btn-success">Search</button>
+    </div>
+    <div class="col-sm-4">
+        <button type="button" id="btnmainclear" class="btn btn-success">Clear</button>
     </div>
 </div>
 </br>

@@ -16,9 +16,6 @@ column_ddl_mapper = {
 }
 
 def content_list(request):
-
-
-
     content_data=Employee.objects.all().order_by('name')[:5000]
     content_data1 = list(content_data)
     content_data1.insert(0, Employee(0 , "", 0))
@@ -93,16 +90,16 @@ def ajax_infinite(request):
 
 def get_all_drop_downs_data(request):
     search_value = request.GET.get("search")
+    ddlcount = int(request.GET.get("ddlcount"))
     result = []
     contents = {}
     for i in column_ddl_mapper.keys():
-        contents = get_distinct_col_values(i, search_value, 0, page_offset=1000)
+        contents = get_distinct_col_values(i, search_value, ddlcount, page_offset=100)
         result.append(contents)
-    print('r',result)
     return JsonResponse(result,safe=False)
 
 
-def get_distinct_col_values(drop_down_number, search_value, current_row_num, page_offset=1000):
+def get_distinct_col_values(drop_down_number, search_value, current_row_num, page_offset=100):
     contents = {}
     filter_count = current_row_num + page_offset
     if drop_down_number:
@@ -110,10 +107,15 @@ def get_distinct_col_values(drop_down_number, search_value, current_row_num, pag
         dynamic_filter = {column_name + "__icontains": search_value}
         column_data = Employee.objects.order_by(column_name).values_list(column_name, flat=True).filter(
             **dynamic_filter).distinct(column_name)[:filter_count]
+        column_data1 = Employee.objects.order_by(column_name).values_list(column_name, flat=True).filter(
+            **dynamic_filter).distinct(column_name)
         contents = {
             drop_down_number: list(column_data)
         }
 
+    if '0' in contents:
+        print(len(contents['0']))
+    print('column_data1',len(column_data1))
     return contents
 
 
@@ -129,7 +131,9 @@ def get_single_drop_downs_data(request):
 
 def get_hands_on_table_data(request):
     hot_filter_values = request.GET.get("hot_filter_values")
+    print('hot_filter_values',hot_filter_values)
     hot_filter_values = json.loads(hot_filter_values)
+
     # hot_filters = {"0": ["Employee 199123", "Employee 299123", "Employee 399123", "Employee 499123", "Employee 599123", "Employee 699123", "Employee 799123", "Employee 899123", "Employee 99123", "Employee 991230", "Employee 991231", "Employee 991232", "Employee 991233", "Employee 991234", "Employee 991235", "Employee 991236", "Employee 991237", "Employee 991238", "Employee 991239", "Employee 999123"], "1": [99123]}
     final_criterion = Q()
     for i in hot_filter_values.keys():
@@ -138,7 +142,7 @@ def get_hands_on_table_data(request):
         if col_filters:
             for j in col_filters:
                 search_val = j.split(":")[1].strip()
-                column_name = column_ddl_mapper[i]
+                column_name = j.split(":")[0].strip()
                 dynamic_filter = {column_name + "__icontains": search_val}
                 criterion |= Q(**dynamic_filter)
             final_criterion |= criterion
@@ -147,6 +151,14 @@ def get_hands_on_table_data(request):
     contents = serializers.serialize('json', data)
     return HttpResponse(contents, content_type='application/json')
 
+def elid(request):
+    return render(request,"vozapp/elided_pagination.html")
+
+def home(request):
+    content_data=Employee.objects.all().order_by('name')[:5000]
+    content_data1 = list(content_data)
+    content_data1.insert(0, Employee(0 , "", 0))
+    return render(request, 'vozapp/single_dd.html', {'content_data': serializers.serialize('json', content_data1)})
 
 
 

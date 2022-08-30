@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+<form>
+  <input type="text" name="q">
+  <button>Search</button>
+</form>
+<div id="example"></div>
+
+<script>
+ const container = document.getElementById('example');
+    var data={{contents|safe}}
+    const hot = new Handsontable(container, {
+  data: data,
+  rowHeaders: true,
+  colwidths:200,
+  colHeaders: ['ID','Name','Salary'],
+  columns:[
+  {data:'fields.id'},
+  {data:'fields.name'},
+  {data:'fields.salary'}],
+  height: 500,
+  stretchH: 'all',
+  width: 500,
+  dropdownMenu: true,
+  filters: true,
+  licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
+});
+</script>
+</body>
+</html>

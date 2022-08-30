@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>News</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+  <link href="{% static 'css/bootstrap-multiselect.css' %}" rel='stylesheet' type='text/css'/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+</head>
+
+<body>
+<p id="demo"></p>
+<div class="row">
+    <div class="col-sm-2">
+        <select id="dd0" class="form-control"></select>
+    </div>
+</div>
+<script>
+  const cars = {"0":["BMW","ddd","mmm"],"1": ["Volvo","nnn"],"2": ["Saab","shail"],"3": [], "4":[], "5":[]};
+  let text=""
+  var ddlopt = "<option>select</option>";
+  for (car in cars){
+
+
+
+  }
+console.log(text)
+document.getElementById("demo").innerHTML = text;
+$("#dd0").prop("multiple",true
+)
+$("#dd0").html(ddlopt)
+$("#dd0").multiselect()
+function getvalues(listv){
+
+if(listv){
+for(i=0;i<listv.length;i++){
+ddlopt += "<option value=" + listv[i] + ">" +  listv[i] + "  </option>";
+}
+}
+return text
+}
+
+</script>
+
+</body>
+</html>
